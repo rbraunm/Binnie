@@ -12,6 +12,8 @@ import binnie.core.util.I18N;
 
 public class AcclimatiserComponentLogic extends ComponentProcessIndefinate {
 
+    private int toleranceTickCounter = 0;
+
     public AcclimatiserComponentLogic(IMachine machine) {
         super(machine, Acclimatiser.ENERGY_PER_TICK);
     }
@@ -51,8 +53,11 @@ public class AcclimatiserComponentLogic extends ComponentProcessIndefinate {
     @Override
     protected void onTickTask() {
         super.onTickTask();
-        if (getUtil().getRandom().nextInt(100) == 0) {
+        if (toleranceTickCounter == 20) {
             attemptAcclimatisation();
+            toleranceTickCounter = 0;
+        } else {
+            toleranceTickCounter++;
         }
     }
 

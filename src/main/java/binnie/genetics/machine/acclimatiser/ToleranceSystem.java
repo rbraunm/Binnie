@@ -38,16 +38,13 @@ public class ToleranceSystem {
     public ItemStack alter(ItemStack stack, ItemStack acc) {
         Random rand = new Random();
         float effect = type.getEffect(acc);
-        if (rand.nextFloat() > Math.abs(effect)) {
-            return stack;
-        }
 
         IIndividual member = AlleleManager.alleleRegistry.getIndividual(stack);
         IGenome genome = member.getGenome();
         IAlleleTolerance tolAllele = (IAlleleTolerance) genome.getActiveAllele(chromosomeOrdinal);
         Tolerance tol = Tolerance.get(tolAllele.getValue());
         Tolerance newTol = Acclimatiser.alterTolerance(tol, effect);
-        if (rand.nextFloat() > 1.0f / (-newTol.getBounds()[0] + newTol.getBounds()[1])) {
+        if (rand.nextFloat() > Math.abs(effect) * Math.pow(0.85f, (-newTol.getBounds()[0] + newTol.getBounds()[1]))) {
             return stack;
         }
 
